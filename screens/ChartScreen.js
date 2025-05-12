@@ -1,24 +1,53 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { Svg, Circle } from 'react-native-svg';
 
 const screenWidth = Dimensions.get('window').width;
 
-const pieData = [
-  { name: 'PM2.5', value: 42.0, color: '#7B61FF' },
-  { name: 'PM10', value: 65.0, color: '#FF5A5F' },
-  { name: 'CO', value: 1.3, color: '#00BFFF' },
-  { name: 'NO₂', value: 0.09, color: '#FFD700' },
-  { name: 'SO₂', value: 0.045, color: '#00FA9A' },
-  { name: 'VOC', value: 0.49, color: '#FF69F5' },
-  { name: 'O₃', value: 0.03, color: '#FFA500' },
-];
+  
+
+// const pieData = [
+//   { name: 'CO', value: sdata['CO'], color: '#7B61FF' },
+//   { name: 'NH3', value: sdata['NH3'], color: '#FF5A5F' },
+//   { name: 'CO2', value: sdata['CO2'], color: '#00BFFF' },
+//   { name: 'NO₂', value: sdata['NO2'], color: '#FFD700' },
+//   { name: 'Benzene', value: sdata['Benzene'], color: '#00FA9A' },
+//   { name: 'Toluene', value: sdata['Toluene'], color: '#FF69F5' },
+//   { name: 'H2', value: sdata['H3'], color: '#FFA500' },
+//   { name: 'LPG', value: sdata['LPG'], color: '#FFA500' },
+//   { name: 'Smoke', value: sdata['Smoke'], color: '#FFA500' },
+// ];
 
 export default function ChartScreen() {
   const chartSize = screenWidth - 32;
   const centerCircleRadius = 60;
+  const [sdata,setSdata] = useState([]);  
 
+  useEffect(() => {
+    fetch('https://script.google.com/macros/s/AKfycbyDi4zWr1V4zEgiPg0SvWYNrAwB1MErgzIqRVogGzITikrP0EcJc-sWJnyEjBCUHxYyZQ/exec')
+      .then(res => res.json())
+      .then(json => {
+        if (json.length > 0) {
+          const lastRow = json[json.length - 1];
+          // console.log(lastRow);
+          setSdata(lastRow);
+           // Store only the last row
+        }
+      })
+      .catch(err => console.error("Error fetching sheet:", err));
+  }, []);
+  const pieData = [
+    { name: 'CO', value: parseFloat(sdata['CO']) || 0, color: '#7B61FF' },
+    { name: 'NH3', value: parseFloat(sdata['NH3']) || 0, color: '#FF5A5F' },
+    { name: 'CO2', value: parseFloat(sdata['CO2']) || 0, color: '#00BFFF' },
+    { name: 'NO₂', value: parseFloat(sdata['NO2']) || 0, color: '#FFD700' },
+    { name: 'Benzene', value: parseFloat(sdata['Benzene']) || 0, color: '#00FA9A' },
+    { name: 'Toluene', value: parseFloat(sdata['Toluene']) || 0, color: '#FF69F5' },
+    { name: 'H2', value: parseFloat(sdata['H2']) || 0, color: '#FFA500' },
+    { name: 'LPG', value: parseFloat(sdata['LPG']) || 0, color: '#00CED1' },
+    { name: 'Smoke', value: parseFloat(sdata['Smoke']) || 0, color: '#FF8C00' },
+  ];
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.card}>

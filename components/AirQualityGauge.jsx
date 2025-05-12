@@ -48,13 +48,13 @@ const AirQualityGauge = ({ value = 12.2 }) => {
   };
 
   // Calculate indicator position
-  const valuePercent = value / 100;
+  const valuePercent = value / 500;
   const angle = startAngle + (endAngle - startAngle) * valuePercent;
   const indicatorPos = polarToCartesian(center, center, radius, angle);
 
   // Determine status text based on value
   const getStatusText = (val) => {
-    if (val < 33) return "Good";
+    if (val < 23) return "Good";
     if (val < 77) return "Moderate";
     return "Poor";
   };
@@ -94,8 +94,10 @@ const AirQualityGauge = ({ value = 12.2 }) => {
           <Circle
             cx={indicatorPos.x}
             cy={indicatorPos.y}
-            r={6}
-            fill="#0b0b0b"
+            r={10}
+            fill="transparent"
+            stroke="#0b0b0b"
+            strokeWidth={4}
           />
         </Svg>
 
@@ -131,6 +133,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     margin: 0,
+    // marginLeft:5,
     textAlign:"center",
     fontSize: 24,
     color: '#81FBB8',
@@ -138,6 +141,7 @@ const styles = StyleSheet.create({
   },
   valueText: {
     marginTop: 5,
+    // marginLeft:10,
     fontSize: 18,
     fontWeight : "bold",
     color: '#ccc',

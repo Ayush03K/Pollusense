@@ -1,7 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-
 export default function AiAnalysisScreen() {
+ 
+
+const AIAnalysis = () => {
+  const { aqi, sdata } = useGlobalStore((state) => state.analysisData || {});
+
+  return (
+    <View>
+      <Text>Predicted AQI: {aqi?.predictedAQI ?? 'No data'}</Text>
+      {/* render rest from sdata */}
+    </View>
+  );
+};
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>AI Insight Summary</Text>
@@ -29,9 +41,9 @@ export default function AiAnalysisScreen() {
         title="Traffic Impact"
         date="April 10"
         stats={[
-          'Avg: 1.2 ppm CO',
-          'Max: 1.8 ppm ',
-          'Min: 0.8 ppm ',
+          'Avg: 0.113 ppm CO',
+          'Max: 0.257 ppm ',
+          'Min: 0.05 ppm ',
         ]}
         colorDots={['red', 'yellow']}
         description="CO levels indicate heavy traffic congestion during afternoon hours. NO2 levels correlate with peak commute times. Consider alternative routes between 2–4 PM."
